@@ -1,15 +1,15 @@
 package token
 
 type Service interface {
-	Outer
-	Inner
+	UserService
+	InnerService
 }
 
-type Outer interface {
+type UserService interface {
 	IssueToken()
 	RevokeToken()
 }
 
-type Inner interface {
+type InnerService interface {
 	ValidateToken()
 }

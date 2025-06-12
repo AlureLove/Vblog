@@ -3,11 +3,25 @@ package user
 import "context"
 
 type Service interface {
+	UserService
+	AdminService
+}
+
+type AdminService interface {
+	UpdateUserStatus(context.Context, *UpdateUserStatusRequest) (*User, error)
+}
+
+type UserService interface {
 	Registry(context.Context, *RegistryRequest) (*User, error)
 	UpdatePassword(context.Context, *UpdatePasswordRequest) error
 	RestPassword(context.Context, *ResetPasswordRequest) error
 	UpdateProfile(context.Context, *UpdateProfileRequest) (*User, error)
 	UnRegistry(context.Context, *UnRegistryRequest)
+}
+
+type UpdateUserStatusRequest struct {
+	UserId string `json:"user_id"`
+	Status
 }
 
 type UpdatePasswordRequest struct {
