@@ -9,6 +9,7 @@ type Service interface {
 
 type AdminService interface {
 	UpdateUserStatus(context.Context, *UpdateUserStatusRequest) (*User, error)
+	DescribeUser(context.Context, *DescribeUserRequest) (*User, error)
 }
 
 type UserService interface {
@@ -17,6 +18,11 @@ type UserService interface {
 	RestPassword(context.Context, *ResetPasswordRequest) error
 	UpdateProfile(context.Context, *UpdateProfileRequest) (*User, error)
 	UnRegistry(context.Context, *UnRegistryRequest)
+}
+
+type DescribeUserRequest struct {
+	DescribeBy DESCRIBE_BY `json:"describe_by"`
+	Value      string      `json:"value"`
 }
 
 type UpdateUserStatusRequest struct {
