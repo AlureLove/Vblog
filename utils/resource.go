@@ -8,3 +8,9 @@ type ResourceMeta struct {
 	CreatedBy string     `json:"created_by" gorm:"created_by;type:varchar(100)"`
 	UpdatedAt *time.Time `json:"updated_at" gorm:"column:updated_at"`
 }
+
+func NewResourceMeta() *ResourceMeta {
+	return &ResourceMeta{
+		CreatedAt: time.Now(),
+	}
+}
