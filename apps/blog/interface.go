@@ -16,11 +16,11 @@ type Service interface {
 
 type QueryBlogRequest struct {
 	utils.PageRequest
-	Keywords string            `form:"keywords"`
-	Stage    *STAGE            `json:"stage"`
-	Username string            `json:"username"`
-	Category string            `json:"category"`
-	Tags     map[string]string `json:"tags"`
+	Keywords  string            `form:"keywords"`
+	Stage     *STAGE            `json:"stage"`
+	CreatedBy string            `json:"created_by"`
+	Category  string            `json:"category"`
+	Tags      map[string]string `json:"tags"`
 }
 
 type DescribeBlogRequest struct {
@@ -39,4 +39,11 @@ type PublishBlogRequest struct {
 
 type DeleteBlogRequest struct {
 	utils.GetRequest
+}
+
+func NewQueryBlogRequest() *QueryBlogRequest {
+	return &QueryBlogRequest{
+		PageRequest: *utils.NewPageRequest(),
+		Tags:        map[string]string{},
+	}
 }
