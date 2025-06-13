@@ -1,8 +1,8 @@
 package utils
 
 type PageRequest struct {
-	PageSize   uint `json:"page_size"`
-	PageNumber uint `json:"page_number"`
+	PageSize   uint `json:"page_size" form:"page_size"`
+	PageNumber uint `json:"page_number" form:"page_number"`
 }
 
 func NewPageRequest() *PageRequest {
