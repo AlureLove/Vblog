@@ -2,12 +2,27 @@ package api
 
 import (
 	"Vblog/apps/blog"
+	"Vblog/apps/blog/impl"
+	"Vblog/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
 )
 
 type BlogApiHandler struct {
 	blog blog.Service
+}
+
+func NewBlogApiHandler() *BlogApiHandler {
+	return &BlogApiHandler{
+		blog: impl.BlogService,
+	}
+}
+
+func (b *BlogApiHandler) Registry(g *gin.Engine) {
+	router := g.Group("/vblog/api/v1/blogs")
+	router.Use(middleware.Auth)
+	router.POST("", b.CreateBlog)
+	router.GET("", b.QueryBlog)
 }
 
 func (b *BlogApiHandler) CreateBlog(ctx *gin.Context) {

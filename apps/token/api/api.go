@@ -18,9 +18,9 @@ func NewTokenApiHandler() *TokenApiHandler {
 }
 
 func (t *TokenApiHandler) Registry(g *gin.Engine) {
-	router := g.Group("/api/tokens")
-	router.POST("/issue", t.IssueToken)
-	router.POST("/revoke", t.RevokeToken)
+	router := g.Group("/vblog/api/v1/tokens")
+	router.POST("", t.IssueToken)
+	router.DELETE("", t.RevokeToken)
 }
 
 func (t *TokenApiHandler) IssueToken(ctx *gin.Context) {

@@ -58,6 +58,15 @@ func (t *TokenServiceImpl) ValidateToken(ctx context.Context, req *token.Validat
 	if err := tk.IsAccessTokenExpired(); err != nil {
 		return nil, err
 	}
-	
+
+	u, err := t.user.DescribeUser(ctx, &user.DescribeUserRequest{
+		DescribeBy: user.DESCRIBE_BY_ID,
+		Value:      tk.RefUserId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	tk.RefUserName = u.Username
+
 	return tk, nil
 }

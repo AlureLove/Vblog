@@ -2,6 +2,7 @@ package impl
 
 import (
 	"Vblog/apps/blog"
+	"Vblog/middleware"
 	"context"
 	"fmt"
 	"github.com/infraboard/mcube/v2/ioc/config/datasource"
@@ -17,6 +18,10 @@ func (b *BlogServiceImpl) CreateBlog(ctx context.Context, req *blog.CreateBlogRe
 	if err != nil {
 		return nil, err
 	}
+
+	tk := middleware.GetTokenFromCtx(ctx)
+	ins.CreatedBy = tk.RefUserName
+	
 	if err = datasource.DBFromCtx(ctx).Create(ins).Error; err != nil {
 		return nil, err
 	}
