@@ -1,6 +1,13 @@
 package token
 
-import "context"
+import (
+	"context"
+	"github.com/go-playground/validator/v10"
+)
+
+var (
+	v = validator.New()
+)
 
 type Service interface {
 	UserService
@@ -12,9 +19,13 @@ type UserService interface {
 	RevokeToken(context.Context, *RevokeTokenRequest) (*Token, error)
 }
 
+type InnerService interface {
+	ValidateToken(context.Context, *ValidateTokenRequest) (*Token, error)
+}
+
 type IssueTokenRequest struct {
-	Username   string `json:"username"`
-	Password   string `json:"password"`
+	Username   string `json:"username" validate:"required"`
+	Password   string `json:"password" validate:"required"`
 	RememberMe bool   `json:"remember_me"`
 }
 
@@ -23,10 +34,23 @@ type RevokeTokenRequest struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-type InnerService interface {
-	ValidateToken(context.Context, *ValidateTokenRequest) (*Token, error)
-}
-
 type ValidateTokenRequest struct {
 	AccessToken string `json:"access_token"`
+}
+
+func NewIssueTokenRequest(username, password string) *IssueTokenRequest {
+	return &IssueTokenRequest{
+		Username: username,
+		Password: password,
+	}
+}
+
+func NewValidateTokenRequest(accessToken string) *ValidateTokenRequest {
+	return &ValidateTokenRequest{
+		AccessToken: accessToken,
+	}
+}
+
+func (i *IssueTokenRequest) Validate() error {
+	return v.Struct(i)
 }

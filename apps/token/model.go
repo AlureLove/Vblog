@@ -1,6 +1,11 @@
 package token
 
-import "time"
+import (
+	"github.com/google/uuid"
+	"github.com/infraboard/mcube/v2/exception"
+	"github.com/infraboard/mcube/v2/tools/pretty"
+	"time"
+)
 
 type Token struct {
 	Id                   uint       `json:"id" gorm:"primary_key;column:id"`
@@ -11,6 +16,52 @@ type Token struct {
 	RefreshToken         string     `json:"refresh_token" gorm:"column:refresh_token;unique;index"`
 	RefreshTokenExpireAt *time.Time `json:"refresh_token_expire_at" gorm:"column:refresh_token_expire_at"`
 	RefUserName          string     `json:"ref_user_name" gorm:"-"`
+}
+
+func NewToken(refUserId string) *Token {
+	aExpiredAt := time.Now().AddDate(0, 0, 1)
+	rExpiredAt := time.Now().AddDate(0, 0, 7)
+	return &Token{
+		RefUserId:            refUserId,
+		AccessToken:          uuid.NewString(),
+		AccessTokenExpireAt:  &aExpiredAt,
+		IssuedAt:             time.Now(),
+		RefreshToken:         uuid.NewString(),
+		RefreshTokenExpireAt: &rExpiredAt,
+	}
+}
+
+func (t *Token) SetRefUserName(refUserName string) *Token {
+	t.RefUserName = refUserName
+	return t
+}
+
+func (t *Token) String() string {
+	return pretty.ToJSON(t)
+}
+
+func (t *Token) IsAccessTokenExpired() error {
+	if t.AccessTokenExpireAt == nil {
+		return nil
+	}
+
+	if time.Now().After(*t.AccessTokenExpireAt) {
+		return exception.NewAccessTokenExpired("%s access token expired", t.AccessToken)
+	}
+
+	return nil
+}
+
+func (t *Token) IsRefreshTokenExpired() error {
+	if t.RefreshTokenExpireAt == nil {
+		return nil
+	}
+
+	if time.Now().After(*t.RefreshTokenExpireAt) {
+		return exception.NewAccessTokenExpired("%s access token expired", t.RefreshToken)
+	}
+
+	return nil
 }
 
 func (t *Token) TableName() string {
