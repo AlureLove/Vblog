@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
 	"github.com/infraboard/mcube/v2/ioc"
+	"github.com/infraboard/mcube/v2/ioc/config/application"
 	iocgin "github.com/infraboard/mcube/v2/ioc/config/gin"
 )
 
@@ -42,6 +43,9 @@ func (t *TokenApiHandler) IssueToken(ctx *gin.Context) {
 		response.Failed(ctx, err)
 		return
 	}
+
+	ctx.SetCookie(token.COOKIE_NAME, ins.AccessToken, ins.AccessTokenExpireTTL(), "/", application.Get().Domain(), false, true)
+
 	response.Success(ctx, ins)
 }
 

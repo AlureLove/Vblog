@@ -64,6 +64,13 @@ func (t *Token) IsRefreshTokenExpired() error {
 	return nil
 }
 
+func (t *Token) AccessTokenExpireTTL() int {
+	if t.AccessTokenExpireAt == nil {
+		return 0
+	}
+	return int(time.Until(*t.AccessTokenExpireAt).Seconds())
+}
+
 func (t *Token) TableName() string {
 	return "tokens"
 }

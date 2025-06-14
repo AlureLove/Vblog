@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/exception"
 	"github.com/infraboard/mcube/v2/http/gin/response"
+	"github.com/infraboard/mcube/v2/ioc/config/log"
 	"strings"
 )
 
@@ -18,6 +19,15 @@ func Auth(g *gin.Context) {
 	accessToken := ""
 	if len(tkList) == 2 {
 		accessToken = tkList[1]
+	}
+
+	if accessToken == "" {
+		tc, err := g.Cookie(token.COOKIE_NAME)
+		if err != nil {
+			log.L().Error().Msgf("get cookie error, %s", err)
+		} else {
+			accessToken = tc
+		}
 	}
 
 	t, err := token.GetService().ValidateToken(g.Request.Context(), token.NewValidateTokenRequest(accessToken))

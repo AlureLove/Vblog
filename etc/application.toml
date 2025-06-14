@@ -1,8 +1,9 @@
 [app]
     name = "vblog"
     description = "A blog application"
+    address = "http://127.0.0.1"
 
-[http]  
+[http]
     host = "127.0.0.1"
     port = 8080
 
