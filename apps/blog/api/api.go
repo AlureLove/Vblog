@@ -5,16 +5,21 @@ import (
 	"Vblog/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
+	"github.com/infraboard/mcube/v2/ioc"
 )
 
 type BlogApiHandler struct {
+	ioc.ObjectImpl
 	blog blog.Service
 }
 
-func NewBlogApiHandler(blogImpl blog.Service) *BlogApiHandler {
-	return &BlogApiHandler{
-		blog: blogImpl,
-	}
+func init() {
+	ioc.Api().Registry(&BlogApiHandler{})
+}
+
+func (b *BlogApiHandler) Init() error {
+	b.blog = blog.GetService()
+	return nil
 }
 
 func (b *BlogApiHandler) Registry(g *gin.Engine) {

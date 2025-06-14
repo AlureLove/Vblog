@@ -2,7 +2,6 @@ package blog_test
 
 import (
 	"Vblog/apps/blog"
-	"Vblog/apps/blog/impl"
 	"context"
 	"testing"
 )
@@ -18,7 +17,7 @@ func TestCreateBlog(t *testing.T) {
 		Content:  "GORM + Gin",
 		Category: "Programming",
 	}
-	ins, err := impl.BlogService.CreateBlog(ctx, req)
+	ins, err := blog.GetService().CreateBlog(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -27,7 +26,7 @@ func TestCreateBlog(t *testing.T) {
 
 func TestQueryBlog(t *testing.T) {
 	req := blog.NewQueryBlogRequest()
-	ins, err := impl.BlogService.QueryBlog(ctx, req)
+	ins, err := blog.GetService().QueryBlog(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 	}

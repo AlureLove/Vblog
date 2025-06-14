@@ -5,12 +5,20 @@ import (
 	"Vblog/middleware"
 	"context"
 	"fmt"
+	"github.com/infraboard/mcube/v2/ioc"
 	"github.com/infraboard/mcube/v2/ioc/config/datasource"
 )
 
-var BlogService blog.Service = &BlogServiceImpl{}
-
 type BlogServiceImpl struct {
+	ioc.ObjectImpl
+}
+
+func init() {
+	ioc.Controller().Registry(&BlogServiceImpl{})
+}
+
+func (b *BlogServiceImpl) Name() string {
+	return blog.AppName
 }
 
 func (b *BlogServiceImpl) CreateBlog(ctx context.Context, req *blog.CreateBlogRequest) (*blog.Blog, error) {
@@ -21,7 +29,7 @@ func (b *BlogServiceImpl) CreateBlog(ctx context.Context, req *blog.CreateBlogRe
 
 	tk := middleware.GetTokenFromCtx(ctx)
 	ins.CreatedBy = tk.RefUserName
-	
+
 	if err = datasource.DBFromCtx(ctx).Create(ins).Error; err != nil {
 		return nil, err
 	}

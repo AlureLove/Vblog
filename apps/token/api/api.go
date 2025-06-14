@@ -4,16 +4,21 @@ import (
 	"Vblog/apps/token"
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
+	"github.com/infraboard/mcube/v2/ioc"
 )
 
 type TokenApiHandler struct {
+	ioc.ObjectImpl
 	token token.UserService
 }
 
-func NewTokenApiHandler(tokenImpl token.UserService) *TokenApiHandler {
-	return &TokenApiHandler{
-		token: tokenImpl,
-	}
+func init() {
+	ioc.Api().Registry(&TokenApiHandler{})
+}
+
+func (t *TokenApiHandler) Init() error {
+	t.token = token.GetService()
+	return nil
 }
 
 func (t *TokenApiHandler) Registry(g *gin.Engine) {

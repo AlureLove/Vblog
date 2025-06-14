@@ -3,7 +3,12 @@ package blog
 import (
 	"Vblog/utils"
 	"context"
+	"github.com/infraboard/mcube/v2/ioc"
 	"strings"
+)
+
+const (
+	AppName = "blog"
 )
 
 type Service interface {
@@ -47,6 +52,10 @@ func NewQueryBlogRequest() *QueryBlogRequest {
 		PageRequest: *utils.NewPageRequest(),
 		Tags:        map[string]string{},
 	}
+}
+
+func GetService() Service {
+	return ioc.Controller().Get(AppName).(Service)
 }
 
 func (q *QueryBlogRequest) SetTag(tag string) {
