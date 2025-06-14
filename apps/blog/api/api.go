@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
 	"github.com/infraboard/mcube/v2/ioc"
+	iocgin "github.com/infraboard/mcube/v2/ioc/config/gin"
 )
 
 type BlogApiHandler struct {
@@ -19,14 +20,17 @@ func init() {
 
 func (b *BlogApiHandler) Init() error {
 	b.blog = blog.GetService()
+	iocgin.RootRouter()
+
+	r := iocgin.ObjectRouter(b)
+	r.Use(middleware.Auth)
+	r.POST("", b.CreateBlog)
+	r.GET("", b.QueryBlog)
 	return nil
 }
 
-func (b *BlogApiHandler) Registry(g *gin.Engine) {
-	router := g.Group("/vblog/api/v1/blogs")
-	router.Use(middleware.Auth)
-	router.POST("", b.CreateBlog)
-	router.GET("", b.QueryBlog)
+func (b *BlogApiHandler) Name() string {
+	return "blogs"
 }
 
 func (b *BlogApiHandler) CreateBlog(ctx *gin.Context) {

@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
 	"github.com/infraboard/mcube/v2/ioc"
+	iocgin "github.com/infraboard/mcube/v2/ioc/config/gin"
 )
 
 type TokenApiHandler struct {
@@ -18,13 +19,15 @@ func init() {
 
 func (t *TokenApiHandler) Init() error {
 	t.token = token.GetService()
+	iocgin.RootRouter()
+	r := iocgin.ObjectRouter(t)
+	r.POST("", t.IssueToken)
+	r.DELETE("", t.RevokeToken)
 	return nil
 }
 
-func (t *TokenApiHandler) Registry(g *gin.Engine) {
-	router := g.Group("/vblog/api/v1/tokens")
-	router.POST("", t.IssueToken)
-	router.DELETE("", t.RevokeToken)
+func (t *TokenApiHandler) Name() string {
+	return "tokens"
 }
 
 func (t *TokenApiHandler) IssueToken(ctx *gin.Context) {
