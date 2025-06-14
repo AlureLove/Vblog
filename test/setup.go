@@ -1,6 +1,7 @@
 package test
 
 import (
+	_ "Vblog/apps"
 	"github.com/infraboard/mcube/v2/ioc"
 	"os"
 	"path/filepath"

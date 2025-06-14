@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"Vblog/apps/token"
-	"Vblog/apps/token/impl"
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/exception"
@@ -21,7 +20,7 @@ func Auth(g *gin.Context) {
 		accessToken = tkList[1]
 	}
 
-	t, err := impl.TokenService.ValidateToken(g.Request.Context(), token.NewValidateTokenRequest(accessToken))
+	t, err := token.GetService().ValidateToken(g.Request.Context(), token.NewValidateTokenRequest(accessToken))
 	if err != nil {
 		response.Failed(g, exception.NewUnauthorized("token check failed: %s", err))
 		g.Abort()

@@ -3,6 +3,11 @@ package token
 import (
 	"context"
 	"github.com/go-playground/validator/v10"
+	"github.com/infraboard/mcube/v2/ioc"
+)
+
+const (
+	AppName = "token"
 )
 
 var (
@@ -49,6 +54,10 @@ func NewValidateTokenRequest(accessToken string) *ValidateTokenRequest {
 	return &ValidateTokenRequest{
 		AccessToken: accessToken,
 	}
+}
+
+func GetService() Service {
+	return ioc.Controller().Get(AppName).(Service)
 }
 
 func (i *IssueTokenRequest) Validate() error {

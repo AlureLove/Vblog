@@ -2,7 +2,6 @@ package api
 
 import (
 	"Vblog/apps/blog"
-	"Vblog/apps/blog/impl"
 	"Vblog/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
@@ -12,9 +11,9 @@ type BlogApiHandler struct {
 	blog blog.Service
 }
 
-func NewBlogApiHandler() *BlogApiHandler {
+func NewBlogApiHandler(blogImpl blog.Service) *BlogApiHandler {
 	return &BlogApiHandler{
-		blog: impl.BlogService,
+		blog: blogImpl,
 	}
 }
 

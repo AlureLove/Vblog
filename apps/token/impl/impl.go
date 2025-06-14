@@ -3,19 +3,29 @@ package impl
 import (
 	"Vblog/apps/token"
 	"Vblog/apps/user"
-	"Vblog/apps/user/impl"
 	"context"
 	"fmt"
 	"github.com/infraboard/mcube/v2/exception"
+	"github.com/infraboard/mcube/v2/ioc"
 	"github.com/infraboard/mcube/v2/ioc/config/datasource"
 )
 
-var TokenService token.Service = &TokenServiceImpl{
-	user: impl.UserService,
+type TokenServiceImpl struct {
+	ioc.ObjectImpl
+	user user.AdminService
 }
 
-type TokenServiceImpl struct {
-	user user.AdminService
+func init() {
+	ioc.Controller().Registry(&TokenServiceImpl{})
+}
+
+func (t *TokenServiceImpl) Init() error {
+	t.user = user.GetService()
+	return nil
+}
+
+func (t *TokenServiceImpl) Name() string {
+	return token.AppName
 }
 
 func (t *TokenServiceImpl) IssueToken(ctx context.Context, req *token.IssueTokenRequest) (*token.Token, error) {

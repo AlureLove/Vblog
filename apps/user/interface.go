@@ -1,6 +1,13 @@
 package user
 
-import "context"
+import (
+	"context"
+	"github.com/infraboard/mcube/v2/ioc"
+)
+
+const (
+	AppName = "user"
+)
 
 type Service interface {
 	UserService
@@ -49,4 +56,8 @@ type UpdateProfileRequest struct {
 
 type UnRegistryRequest struct {
 	Username string `json:"username"`
+}
+
+func GetService() Service {
+	return ioc.Controller().Get(AppName).(Service)
 }

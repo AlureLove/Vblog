@@ -2,7 +2,6 @@ package user_test
 
 import (
 	"Vblog/apps/user"
-	"Vblog/apps/user/impl"
 	"context"
 	"testing"
 )
@@ -15,7 +14,7 @@ func TestRegistry(t *testing.T) {
 	req := user.NewRegistryRequest()
 	req.Username = "admin"
 	req.Password = "123456"
-	ins, err := impl.UserService.Registry(ctx, req)
+	ins, err := user.GetService().Registry(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +22,7 @@ func TestRegistry(t *testing.T) {
 }
 
 func TestDescribeUser(t *testing.T) {
-	ins, err := impl.UserService.DescribeUser(ctx, &user.DescribeUserRequest{
+	ins, err := user.GetService().DescribeUser(ctx, &user.DescribeUserRequest{
 		user.DESCRIBE_BY_USERNAME, "admin",
 	})
 	if err != nil {

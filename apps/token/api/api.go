@@ -2,7 +2,6 @@ package api
 
 import (
 	"Vblog/apps/token"
-	"Vblog/apps/token/impl"
 	"github.com/gin-gonic/gin"
 	"github.com/infraboard/mcube/v2/http/gin/response"
 )
@@ -11,9 +10,9 @@ type TokenApiHandler struct {
 	token token.UserService
 }
 
-func NewTokenApiHandler() *TokenApiHandler {
+func NewTokenApiHandler(tokenImpl token.UserService) *TokenApiHandler {
 	return &TokenApiHandler{
-		token: impl.TokenService,
+		token: tokenImpl,
 	}
 }
 

@@ -3,13 +3,23 @@ package impl
 import (
 	"Vblog/apps/user"
 	"context"
+	"github.com/infraboard/mcube/v2/ioc"
 	"github.com/infraboard/mcube/v2/ioc/config/datasource"
 	"golang.org/x/crypto/bcrypt"
 )
 
-var UserService user.Service = &UserServiceImpl{}
+var _ user.Service = (*UserServiceImpl)(nil)
 
 type UserServiceImpl struct {
+	ioc.ObjectImpl
+}
+
+func init() {
+	ioc.Controller().Registry(&UserServiceImpl{})
+}
+
+func (u *UserServiceImpl) Name() string {
+	return user.AppName
 }
 
 func (u *UserServiceImpl) Registry(ctx context.Context, req *user.RegistryRequest) (*user.User, error) {
