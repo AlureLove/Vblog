@@ -2,7 +2,7 @@
 </script>
 
 <template>
-<div>SPA</div>
+  <RouterView></RouterView>
 </template>
 
 <style scoped></style>
