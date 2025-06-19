@@ -30,3 +30,42 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Frontend (Vue.js) specific
+web/node_modules/
+web/dist/
+web/dist-ssr/
+web/coverage/
+web/.DS_Store
+web/*.local
+web/logs/
+web/*.log
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/pnpm-debug.log*
+web/lerna-debug.log*
+web/cypress/videos/
+web/cypress/screenshots/
+web/*.tsbuildinfo
+
+# Node.js dependencies (general)
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
