@@ -42,7 +42,7 @@ func (t *TokenServiceImpl) IssueToken(ctx context.Context, req *token.IssueToken
 	}
 
 	if err = u.CheckPassword(req.Password); err != nil {
-		return nil, err
+		return nil, exception.NewUnauthorized("username or password error").WithData(err)
 	}
 
 	tk := token.NewToken(fmt.Sprintf("%d", u.Id)).SetRefUserName(u.Username)

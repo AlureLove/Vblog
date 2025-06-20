@@ -34,6 +34,7 @@
 
 import {reactive, ref} from "vue";
 import { LOGIN } from "@/api/token.js";
+import { token } from '@/stores/token.js'
 
 const loginForm = reactive({
   username: '',
@@ -47,7 +48,11 @@ const handleSubmit = async (data) => {
   if (data.errors === undefined) {
     try {
       submitLoading.value = true
-      await LOGIN(data.values)
+      const tk = await LOGIN(data.values)
+      console.log(tk)
+      token.value.access_token = tk.access_token
+      token.value.ref_user_name = tk.ref_user_name
+      token.value.refresh_token = tk.refresh_token
     } catch (e) {
       console.error(e)
     } finally {
