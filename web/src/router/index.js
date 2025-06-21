@@ -12,11 +12,28 @@ const router = createRouter({
       path: '/backend',
       name: 'backend',
       component: () => import('../views/backend/BackendLayout.vue'),
+      redirect: '/backend/blog',
       children: [
         {
           path: 'blog',
-          name: 'backend_blog',
-          component: () => import('../views/backend/blog/ListPage.vue'),
+          name: 'blog_management',
+          redirect: '/backend/blog/blog_list',
+          children: [
+            {
+              path: 'blog_list',
+              name: 'backend_blog_list',
+              component: () => import('../views/backend/blog/ListPage.vue'),
+            },
+            {
+              path: 'tag_list',
+              name: 'backend_tag_list',
+              component: () => import('../views/backend/tag/ListPage.vue'),
+            }
+          ]
+        },
+        {
+          path: 'comment',
+          name: 'comment_management',
         }
       ]
     }

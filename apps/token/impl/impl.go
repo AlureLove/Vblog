@@ -38,6 +38,9 @@ func (t *TokenServiceImpl) IssueToken(ctx context.Context, req *token.IssueToken
 		Value:      req.Username,
 	})
 	if err != nil {
+		if exception.IsNotFoundError(err) {
+			return nil, exception.NewUnauthorized("username or password error").WithData(err)
+		}
 		return nil, err
 	}
 

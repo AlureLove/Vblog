@@ -5,24 +5,23 @@
     </a-layout-header>
     <a-layout class="body">
       <a-layout-sider width="260">
-        <a-menu>
-          <a-sub-menu key="1">
+        <a-menu @menu-item-click="handleMenuItemClick">
+          <a-sub-menu key="blog">
             <template #title>
               <span>
-                <IconCalendar/>Navigation1
+                <icon-bookmark/>Article Management
               </span>
             </template>
-            <a-menu-item key="1_1">Menu 1</a-menu-item>
-            <a-menu-item key="1_2">Menu 2</a-menu-item>
+            <a-menu-item key="backend_blog_list">Articles</a-menu-item>
+            <a-menu-item key="backend_tag_list">Tags</a-menu-item>
           </a-sub-menu>
-          <a-sub-menu key="2">
+          <a-sub-menu key="comment">
             <template #title>
               <span>
-                <IconCalendar/>Navigation2
+                <icon-message/>Comment Management
               </span>
             </template>
-            <a-menu-item key="2_1">Menu 1</a-menu-item>
-            <a-menu-item key="2_2">Menu 2</a-menu-item>
+            <a-menu-item key="backend_comment_list">Comment List</a-menu-item>
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
@@ -34,6 +33,14 @@
 </template>
 
 <script setup>
+
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+
+const handleMenuItemClick = (key) => {
+  router.push({name: key})
+}
 
 </script>
 

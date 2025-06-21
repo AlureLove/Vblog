@@ -3,9 +3,11 @@ package impl
 import (
 	"Vblog/apps/user"
 	"context"
+	"github.com/infraboard/mcube/v2/exception"
 	"github.com/infraboard/mcube/v2/ioc"
 	"github.com/infraboard/mcube/v2/ioc/config/datasource"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 var _ user.Service = (*UserServiceImpl)(nil)
@@ -77,6 +79,9 @@ func (u *UserServiceImpl) DescribeUser(ctx context.Context, req *user.DescribeUs
 
 	ins := &user.User{}
 	if err := query.Take(ins).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, exception.NewNotFound("user not found")
+		}
 		return nil, err
 	}
 
